@@ -37,7 +37,7 @@ ClinicalTrials.gov provides convenient API to access its data. Derailed informat
 
 ```{r}
 # In this example we downloaded 50 trials for lung cancer (NOTE: max_rnk - min_rnk should be no more than 100)
-dataset_1 = clinicaltrialsgov::get_trials_API_query(query = "lung+cancer",
+dataset_1 <- clinicaltrialsgov::get_trials_API_query(query = "lung+cancer",
                                                     download_folder = "test",
                                                     min_rnk = 1,
                                                     max_rnk = 50)
@@ -64,14 +64,14 @@ In some cases one might be willing to download more than 100 trials. In this cas
 In the example below we will download \~ 400 trials for a drug olaparib
 
 ```{r}
-urls = clinicaltrialsgov::prepare_download_URLs(query = "olaparib")
+urls <- clinicaltrialsgov::prepare_download_URLs(query = "olaparib")
 writeLines(urls)
 ```
 
 Now obtained URLs could be used to download trials
 
 ```{r}
-dataset_2 = clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
+dataset_2 <- clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
 ```
 
 Preview of the data (we just show first 10 columns)
@@ -97,7 +97,7 @@ In the code below, we could see downloading trials for all combinations of sever
 
 ```{r}
 
-dataset_3 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+dataset_3 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
   condition_terms = c("brain cancer", "glioma"),
   treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
   folder = "test_downloads",
@@ -118,7 +118,7 @@ list.files("test_downloads")
 ```
 Let's see the reporting file
 ```{r}
-report_1 = read.csv("test_downloads/reporting_file.csv")
+report_1 <- read.csv("test_downloads/reporting_file.csv")
 report_1
 ```
 All combinations of diseases and treatments are searched
@@ -129,7 +129,7 @@ report_1[,c("Intervention", "Condition_searched")]
 This function also supports specification of just disease or just therapy
 
 ```{r}
-dataset_4 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+dataset_4 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
   treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
   folder = "test_downloads2")
 ```

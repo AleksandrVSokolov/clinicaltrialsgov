@@ -17,9 +17,9 @@ remotes::install_github("AleksandrVSokolov/clinicaltrialsgov", force = TRUE)
 
     ## 
     ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ##      checking for file ‘/tmp/RtmpKQZoik/remotes732813eeab8e/AleksandrVSokolov-clinicaltrialsgov-30360f1/DESCRIPTION’ ...  ✔  checking for file ‘/tmp/RtmpKQZoik/remotes732813eeab8e/AleksandrVSokolov-clinicaltrialsgov-30360f1/DESCRIPTION’
+    ##      checking for file ‘/tmp/RtmppauxFX/remotes76c13318f068/AleksandrVSokolov-clinicaltrialsgov-ef4630d/DESCRIPTION’ ...  ✔  checking for file ‘/tmp/RtmppauxFX/remotes76c13318f068/AleksandrVSokolov-clinicaltrialsgov-ef4630d/DESCRIPTION’
     ##   ─  preparing ‘clinicaltrialsgov’:
-    ##      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
+    ##    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
     ##   ─  checking for LF line-endings in source and make files and shell scripts
     ## ─  checking for empty or unneeded directories
     ##   ─  building ‘clinicaltrialsgov_0.1.0.tar.gz’
@@ -49,7 +49,7 @@ all information for trials
 
 ``` r
 # In this example we downloaded 50 trials for lung cancer (NOTE: max_rnk - min_rnk should be no more than 100)
-dataset_1 = clinicaltrialsgov::get_trials_API_query(query = "lung+cancer",
+dataset_1 <- clinicaltrialsgov::get_trials_API_query(query = "lung+cancer",
                                                     download_folder = "test",
                                                     min_rnk = 1,
                                                     max_rnk = 50)
@@ -118,7 +118,7 @@ clinicaltrialsgov::get_trials_API_urls()
 In the example below we will download \~ 400 trials for a drug olaparib
 
 ``` r
-urls = clinicaltrialsgov::prepare_download_URLs(query = "olaparib")
+urls <- clinicaltrialsgov::prepare_download_URLs(query = "olaparib")
 writeLines(urls)
 ```
 
@@ -131,15 +131,15 @@ writeLines(urls)
 Now obtained URLs could be used to download trials
 
 ``` r
-dataset_2 = clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
+dataset_2 <- clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
 ```
 
-    ## 1   20 % completed at 2023-03-21 16:29:39
-    ## 2   40 % completed at 2023-03-21 16:29:53
-    ## 3   60 % completed at 2023-03-21 16:30:10
-    ## 4   80 % completed at 2023-03-21 16:30:21
-    ## 5   100 % completed at 2023-03-21 16:30:24
-    ## Combining 406 datasets at 2023-03-21 16:30:24
+    ## 1   20 % completed at 2023-03-21 16:44:13
+    ## 2   40 % completed at 2023-03-21 16:44:30
+    ## 3   60 % completed at 2023-03-21 16:44:45
+    ## 4   80 % completed at 2023-03-21 16:44:55
+    ## 5   100 % completed at 2023-03-21 16:44:58
+    ## Combining 406 datasets at 2023-03-21 16:44:58
 
 Preview of the data (we just show first 10 columns)
 
@@ -229,19 +229,19 @@ In the code below, we could see downloading trials for all combinations
 of several types of cancers with several treatments
 
 ``` r
-dataset_3 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+dataset_3 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
   condition_terms = c("brain cancer", "glioma"),
   treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
   folder = "test_downloads",
   url_suffix = "&cntry=GB&state=&city=London")
 ```
 
-    ## 1   16.6667 % complete at 2023-03-21 16:30:28
-    ## 2   33.3333 % complete at 2023-03-21 16:30:32
-    ## 3   50 % complete at 2023-03-21 16:30:35
-    ## 4   66.6667 % complete at 2023-03-21 16:30:39
-    ## 5   83.3333 % complete at 2023-03-21 16:30:42
-    ## 6   100 % complete at 2023-03-21 16:30:45
+    ## 1   16.6667 % complete at 2023-03-21 16:45:03
+    ## 2   33.3333 % complete at 2023-03-21 16:45:06
+    ## 3   50 % complete at 2023-03-21 16:45:09
+    ## 4   66.6667 % complete at 2023-03-21 16:45:14
+    ## 5   83.3333 % complete at 2023-03-21 16:45:18
+    ## 6   100 % complete at 2023-03-21 16:45:21
 
 Preview data (first 10 columns)
 
@@ -318,7 +318,7 @@ list.files("test_downloads")
 Let’s see the reporting file
 
 ``` r
-report_1 = read.csv("test_downloads/reporting_file.csv")
+report_1 <- read.csv("test_downloads/reporting_file.csv")
 report_1
 ```
 
@@ -369,14 +369,14 @@ This function also supports specification of just disease or just
 therapy
 
 ``` r
-dataset_4 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+dataset_4 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
   treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
   folder = "test_downloads2")
 ```
 
-    ## 1   33.3333 % complete at 2023-03-21 16:30:54
-    ## 2   66.6667 % complete at 2023-03-21 16:30:57
-    ## 3   100 % complete at 2023-03-21 16:31:01
+    ## 1   33.3333 % complete at 2023-03-21 16:45:31
+    ## 2   66.6667 % complete at 2023-03-21 16:45:36
+    ## 3   100 % complete at 2023-03-21 16:45:39
 
 ``` r
 nrow(dataset_4)
