@@ -1,0 +1,20 @@
+Package: clinicaltrialsgov
+Type: Package
+Title: A package to download clinical trial data from ClinicalTrials.gov
+Version: 0.1.0
+Author: Aleksandr V. Sokolov
+Maintainer: Aleksandr V. Sokolov. <sokol906@gmail.com>
+Description: A package to download clinical trial data fron ClinicalTrials.gov.
+   It uses ClinicalTrials.gov API to generate requests and download data. Downloaded data is
+   both imported into R and/or stored in the JSON format. This package supports the current and legacy
+   formats of the ClinicalTrials.gov API.
+License: MIT
+Imports: 
+    data.table,
+    xml2,
+    rjson,
+    httr,
+    stringi,
+    stringr
+Encoding: UTF-8
+RoxygenNote: 7.2.3
