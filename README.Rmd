@@ -29,7 +29,7 @@ We have installed the package
 library(clinicaltrialsgov)
 ```
 
-# Downloading trials with NEW API
+# Downloading trials with the new API
 
 ClinicalTrials.gov provides convenient API to access its data. Derailed information could be read here: <https://clinicaltrials.gov/api/gui> As of March, 2023 only 100 studies could be downloaded per request with this API. The clinicaltrialsgov package currently supports downloading all information for trials
 
@@ -51,10 +51,10 @@ list.files("test")
 ```
 
 
-Preview of the data
+Preview of the data (we just show first 10 columns)
 
 ```{r}
-head(dataset_1)
+head(dataset_1[,1:10])
 ```
 
 Data may have a very big number of columns since every term obtained from a trial is stored in the independemt cell in the initial XML document
@@ -74,15 +74,15 @@ Now obtained URLs could be used to download trials
 dataset_2 = clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
 ```
 
-Preview of the data
+Preview of the data (we just show first 10 columns)
 
 ```{r}
-head(dataset_2)
+head(dataset_2[,1:10])
 ```
 
 ```{r}
-nrow(dataset_2)
-str(dataset_2)
+nrow(dataset_2[,1:10])
+str(dataset_2[,1:10])
 ```
 
 # Downloading trials with legacy API
@@ -103,13 +103,13 @@ dataset_3 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
   folder = "test_downloads",
   url_suffix = "&cntry=GB&state=&city=London")
 ```
-Preview data
+Preview data (first 10 columns)
 ```{r}
 nrow(dataset_3)
 ```
 
 ```{r}
-head(dataset_3)
+head(dataset_3[,1:10])
 ```
 In the folder test_downloads we could find individual download files and reporting file
 
