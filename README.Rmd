@@ -1,0 +1,142 @@
+---
+title: "Package clinicaltrialsgov to download clinical data"
+author: "Aleksandr V. Sokolov"
+date: "2023-03-21"
+output:
+  md_document:
+    variant: markdown_github
+code_folding: show
+---
+
+## clinicaltrialsgov package
+
+-   This package is designed to download data from ClinicalTrials.gov
+-   It supports legacy and new APIs (as of 2022-2023)
+-   Several search features are available
+-   As of now only downloading full data is supported
+-   The ClinicalTrials.gov beta (https://beta.clinicaltrials.gov/) is not yet implemented
+
+```{r}
+# Package installation
+library(remotes)
+remotes::install_github("AleksandrVSokolov/clinicaltrialsgov", force = TRUE)
+```
+
+We have installed the package
+
+```{r}
+# Importing
+library(clinicaltrialsgov)
+```
+
+# Downloading trials with NEW API
+
+ClinicalTrials.gov provides convenient API to access its data. Derailed information could be read here: <https://clinicaltrials.gov/api/gui> As of March, 2023 only 100 studies could be downloaded per request with this API. The clinicaltrialsgov package currently supports downloading all information for trials
+
+-   In the following code we download studies for lung cancer with API-acceptable expression
+
+```{r}
+# In this example we downloaded 50 trials for lung cancer (NOTE: max_rnk - min_rnk should be no more than 100)
+dataset_1 = clinicaltrialsgov::get_trials_API_query(query = "lung+cancer",
+                                                    download_folder = "test",
+                                                    min_rnk = 1,
+                                                    max_rnk = 50)
+
+```
+
+This function is also creates a folder "test" and dumps there a corresponding JSON file with trials before concatenation
+
+```{r}
+list.files("test")
+```
+
+
+Preview of the data
+
+```{r}
+head(dataset_1)
+```
+
+Data may have a very big number of columns since every term obtained from a trial is stored in the independemt cell in the initial XML document
+
+In some cases one might be willing to download more than 100 trials. In this case, it is necessary to perform to functions: clinicaltrialsgov::prepare_download_URLs() clinicaltrialsgov::get_trials_API_urls()
+
+In the example below we will download \~ 400 trials for a drug olaparib
+
+```{r}
+urls = clinicaltrialsgov::prepare_download_URLs(query = "olaparib")
+writeLines(urls)
+```
+
+Now obtained URLs could be used to download trials
+
+```{r}
+dataset_2 = clinicaltrialsgov::get_trials_API_urls(url_list = urls, download_folder = "test2")
+```
+
+Preview of the data
+
+```{r}
+head(dataset_2)
+```
+
+```{r}
+nrow(dataset_2)
+str(dataset_2)
+```
+
+# Downloading trials with legacy API
+
+Legacy ClinicalTrials.gov API was based on the URL: "https://clinicaltrials.gov/ct2/results/download_fields?" and parameters from the advanced search "https://clinicaltrials.gov/ct2/search/advanced?"
+
+- This API allows downloading very large sets of trials in the format as it is seen on the website
+- clinicaltrialsgov package currently supports specifying conditions and treatments as well as additional parameters via URL "suffix"
+- By default it downloads Interventional clinical trials
+
+In the code below, we could see downloading trials for all combinations of several types of cancers with several treatments
+
+```{r}
+
+dataset_3 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+  condition_terms = c("brain cancer", "glioma"),
+  treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
+  folder = "test_downloads",
+  url_suffix = "&cntry=GB&state=&city=London")
+```
+Preview data
+```{r}
+nrow(dataset_3)
+```
+
+```{r}
+head(dataset_3)
+```
+In the folder test_downloads we could find individual download files and reporting file
+
+```{r}
+list.files("test_downloads")
+```
+Let's see the reporting file
+```{r}
+report_1 = read.csv("test_downloads/reporting_file.csv")
+report_1
+```
+All combinations of diseases and treatments are searched
+```{r}
+report_1[,c("Intervention", "Condition_searched")]
+```
+
+This function also supports specification of just disease or just therapy
+
+```{r}
+dataset_4 = clinicaltrialsgov::clinical_trial_downloader_two_terms(
+  treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
+  folder = "test_downloads2")
+```
+```{r}
+nrow(dataset_4)
+```
+
+
+
+
