@@ -103,6 +103,7 @@ clinical_trial_downloader_two_terms <- function(condition_terms = NULL,
 
   if (is.null(condition_terms)){
     condition_terms <- ""
+    condition_terms_initial <- ""
   }
   if (is.null(treatment_terms)){
     treatment_terms <- ""
