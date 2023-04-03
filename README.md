@@ -1,6 +1,6 @@
 ## clinicaltrialsgov package
 
--   This package is designed to download data from ClinicalTrials.gov
+-   This package is designed to download data from ClinicalTrials.gov (https://clinicaltrials.gov/)
 -   It supports legacy and new APIs (as of 2022-2023)
 -   Several search features are available
 -   As of now only downloading full data is supported
