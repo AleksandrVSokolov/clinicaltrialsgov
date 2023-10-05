@@ -1,4 +1,5 @@
 ## clinicaltrialsgov package
+This ClinicalTrials.gov website is one of largest registers of clinical trials in world. It is primarily focused on US market/healthcare but also frequently includes trials from other countries and could be used for analysis of trends in drug discovey. This ClinicalTrials.gov provides manual data downloading and API functionality. This package provides convenient ways to access clinical trial records within the R environment to facilitate subsequent analyses. The package allows specifying conditions, treatments as well as any advanced filter option in the ClinicalTrials search engine (via URL suffix).
 
 -   This package is designed to download data from ClinicalTrials.gov (https://clinicaltrials.gov/)
 -   It supports legacy and new APIs (as of 2022-2023)
