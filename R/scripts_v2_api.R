@@ -71,8 +71,8 @@ list_to_df <- function(data_list){
 #' @import "stringi"
 download_v2_url <- function(url, folder, index = 1){
 
-condition = NA
-treatment = NA
+condition <- NA
+treatment <- NA
 
 if (stri_detect_fixed(url, pattern = "query.cond")){
   fragments <- unlist(stri_split_fixed(url, "&"))
@@ -165,7 +165,7 @@ if (nrow(content) > 0) {
 #' @export
 #' @import "httr"
 #' @import "stringi"
-clinical_trial_downloaderV2_API = function(condition_terms = NULL,
+clinical_trial_downloaderV2_API <- function(condition_terms = NULL,
                                            treatment_terms = NULL,
                                            folder,
                                            format_suffix = "format=csv",
@@ -233,8 +233,8 @@ clinical_trial_downloaderV2_API = function(condition_terms = NULL,
     urls <- paste0(urls, url_suffix)
   }
 
-  failed_urls = vector()
-  zero_results = vector()
+  failed_urls <- vector()
+  zero_results <- vector()
 
   for (i in 1:length(urls)){
     message <- paste0("Parsing URL:", urls[i], " index: ", i)
@@ -266,7 +266,7 @@ clinical_trial_downloaderV2_API = function(condition_terms = NULL,
 
       if (ERROR_COUNTER > 10){
         warning(paste0("Unable to get trials from ", urls[i]))
-        failed_urls = c(failed_urls, urls[i])
+        failed_urls <- c(failed_urls, urls[i])
         ERROR_FLAG_CTGOV <- FALSE
       } else {
         tryCatch(
@@ -281,16 +281,16 @@ clinical_trial_downloaderV2_API = function(condition_terms = NULL,
       }
     }
     if (result == 0){
-      zero_results = c(zero_results, urls[i])
+      zero_results <- c(zero_results, urls[i])
     }
   }
 
   if (length(failed_urls) > 0){
-    p_fail = file.path(folder, "FAILED_URLS.txt")
+    p_fail <- file.path(folder, "FAILED_URLS.txt")
     writeLines(text = failed_urls, con = p_fail)
   }
   if (length(zero_results) > 0){
-    p_zero = file.path(folder, "ZERO_URLS.txt")
+    p_zero <- file.path(folder, "ZERO_URLS.txt")
     writeLines(text = zero_results, con = p_zero)
   }
 }
