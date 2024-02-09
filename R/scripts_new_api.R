@@ -32,7 +32,7 @@ parse_single_trial_recursive <- function(x, previous_name = NULL){
 
   }
 
-  name = attr(x, "Name")
+  name <- attr(x, "Name")
   lapply(x, function(x) parse_single_trial_recursive(x, previous_name = name))
 
 }
@@ -213,7 +213,7 @@ get_trials_API_urls <- function(url_list,
                                delay = 0.5,
                                download_folder = NULL){
 
-  full_data = list()
+  full_data <- list()
   for (i in 1:length(url_list)){
 
     Sys.sleep(delay)
