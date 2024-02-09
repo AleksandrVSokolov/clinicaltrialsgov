@@ -223,7 +223,7 @@ clinical_trial_downloader_two_terms <- function(condition_terms = NULL,
     return("0 trials found")
   }
 
-  paths = paste0(folder,"/", files)
+  paths <- paste0(folder,"/", files)
 
   files_list = list()
   for (i in 1:length(paths)){
