@@ -1,7 +1,7 @@
 ---
 title: "Package clinicaltrialsgov to download clinical data"
 author: "Aleksandr V. Sokolov"
-date: "2023-03-21"
+date: "2024-02-09"
 output:
   md_document:
     variant: markdown_github
@@ -11,10 +11,10 @@ code_folding: show
 ## clinicaltrialsgov package
 
 -   This package is designed to download data from ClinicalTrials.gov
--   It supports legacy and new APIs (as of 2022-2023)
--   Several search features are available
+-   It supports legacy and new APIs (as of 2021-2024)
+-   Several search features are available, including specification of all search terms in advanced search
 -   As of now only downloading full data is supported
--   The ClinicalTrials.gov beta (https://beta.clinicaltrials.gov/) is not yet implemented
+-   The V2 version (2024) introduced support for ClinicalTrials.gov API, version 2.0 (https://clinicaltrials.gov/data-api/api)
 
 ```{r}
 # Package installation
@@ -29,9 +29,37 @@ We have installed the package
 library(clinicaltrialsgov)
 ```
 
-# Downloading trials with the new API
+# Downloading clinical trials with the API version 2.0
 
-ClinicalTrials.gov provides convenient API to access its data. Derailed information could be read here: <https://clinicaltrials.gov/api/gui> As of March, 2023 only 100 studies could be downloaded per request with this API. The clinicaltrialsgov package currently supports downloading all information for trials
+This api provides support for both .CSV downloads (as in 2021) and as beta version developed in 2023. 
+The process of downloading is simple and could be performed in few lines of code.
+
+```{r}
+# In this example we download all clinical trials with breast cancer, glioma, lung cancer that were treated with cisplatin or temozolomide or olaparib or dasatinib
+clinical_trial_downloaderV2_API(condition_terms = c("breast cancer", "glioma", "lung cancer"),
+                               treatment_terms = c("cisplatin", "temozolomide", "olaparib", "dasatinib"),
+                               folder = "test_downloads_v2",
+                               url_suffix = "&query.patient=AREA[LocationCity] London")
+```
+
+Note: we download clinical trials for all combinations between treatments and conditions. We specified via suffix "&query.patient=AREA[LocationCity] London" that we want to get trials specifically from London. Other text fields could be seen here: https://clinicaltrials.gov/data-api/api. To import clinical trials we can simply use the function import_ct_results_v2_csv() and specify a downloaded folder.
+
+```{r}
+results = import_ct_results_v2_csv("test_downloads_v2")
+str(results)
+```
+
+Note: one of the combinations did not yield any result. To see it, simply read the file ZERO_URLS.txt located in the download directory
+
+```{r}
+readLines("test_downloads_v2/ZERO_URLS.txt")
+```
+It means that there was no clinical trial in London that was investigating glioma with a treatment of olaparib
+
+
+# Downloading trials with the API beta-version 2023 (probably will expire soon, NOT RECOMMENDED)
+
+Derailed information could be read here: <https://clinicaltrials.gov/api/gui> As of March, 2023 only 100 studies could be downloaded per request with this API. The clinicaltrialsgov package currently supports downloading all information for trials
 
 -   In the following code we download studies for lung cancer with API-acceptable expression
 
@@ -85,7 +113,7 @@ nrow(dataset_2[,1:10])
 str(dataset_2[,1:10])
 ```
 
-# Downloading trials with legacy API
+# Downloading trials with legacy API (version 2021, NOT RECOMMENDED)
 
 Legacy ClinicalTrials.gov API was based on the URL: "https://clinicaltrials.gov/ct2/results/download_fields?" and parameters from the advanced search "https://clinicaltrials.gov/ct2/search/advanced?"
 
@@ -98,9 +126,9 @@ In the code below, we could see downloading trials for all combinations of sever
 ```{r}
 
 dataset_3 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
-  condition_terms = c("brain cancer", "glioma"),
-  treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
-  folder = "test_downloads",
+  condition_terms = c("lung cancer", "glioma"),
+  treatment_terms = c("cisplatin", "temozolomide", "doxorubicin"),
+  folder = "test_downloads_old_api",
   url_suffix = "&cntry=GB&state=&city=London")
 ```
 Preview data (first 10 columns)
@@ -114,11 +142,11 @@ head(dataset_3[,1:10])
 In the folder test_downloads we could find individual download files and reporting file
 
 ```{r}
-list.files("test_downloads")
+list.files("test_downloads_old_api")
 ```
 Let's see the reporting file
 ```{r}
-report_1 <- read.csv("test_downloads/reporting_file.csv")
+report_1 <- read.csv("test_downloads_old_api/reporting_file.csv")
 report_1
 ```
 All combinations of diseases and treatments are searched
@@ -131,12 +159,9 @@ This function also supports specification of just disease or just therapy
 ```{r}
 dataset_4 <- clinicaltrialsgov::clinical_trial_downloader_two_terms(
   treatment_terms = c("cisplatin", "temozolomide", "olaparib"),
-  folder = "test_downloads2")
-```
-```{r}
+  folder = "test_downloads_old_api2")
 nrow(dataset_4)
 ```
-
 
 
 
