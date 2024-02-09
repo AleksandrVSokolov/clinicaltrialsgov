@@ -1,7 +1,7 @@
 Package: clinicaltrialsgov
 Type: Package
 Title: A package to download clinical trial data from ClinicalTrials.gov
-Version: 0.1.0
+Version: 0.2.0
 Author: Aleksandr V. Sokolov
 Maintainer: Aleksandr V. Sokolov. <sokol906@gmail.com>
 Description: A package to download clinical trial data fron ClinicalTrials.gov.
